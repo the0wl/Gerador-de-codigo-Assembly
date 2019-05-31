@@ -1,0 +1,15 @@
+.data
+  var_soma0_1: .word 0x1
+  var_soma0_3: .word 0x3
+  var_soma1_2: .word 0x2
+  var_soma1_5: .word 0x5
+
+CODIGO
+
+SOMA: 
+  la $1 var_soma1
+  la $2 var_soma2
+  lw $1 $1
+  lw $2 $2
+  add $3 $1 $2
+
