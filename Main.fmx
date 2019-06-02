@@ -1,0 +1,274 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 281
+  ClientWidth = 380
+  Position = ScreenCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object liTela: TLayout
+    Align = Client
+    Size.Width = 380.000000000000000000
+    Size.Height = 281.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object edExpressao: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Top
+      TabOrder = 0
+      Text = '2 3 + 9 4 - 7 2 * 8 2 /'
+      Position.X = 20.000000000000000000
+      Position.Y = 20.000000000000000000
+      Margins.Left = 20.000000000000000000
+      Margins.Top = 20.000000000000000000
+      Margins.Right = 20.000000000000000000
+      Size.Width = 340.000000000000000000
+      Size.Height = 37.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object liNumeros: TLayout
+      Align = Right
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 30.000000000000000000
+      Position.X = 210.000000000000000000
+      Position.Y = 67.000000000000000000
+      Size.Width = 140.000000000000000000
+      Size.Height = 214.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object liPrimeiraLinha: TLayout
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Size.Width = 140.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object btOito: TButton
+          Align = Left
+          Margins.Right = 10.000000000000000000
+          Position.X = 50.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = '8'
+        end
+        object btSete: TButton
+          Align = Left
+          Margins.Right = 10.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          Text = '7'
+        end
+        object btNove: TButton
+          Align = Left
+          Position.X = 100.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 6
+          Text = '9'
+        end
+      end
+      object liTerceiraLinha: TLayout
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 100.000000000000000000
+        Size.Width = 140.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        object btUm: TButton
+          Align = Left
+          Margins.Right = 10.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          Text = '1'
+        end
+        object btDois: TButton
+          Align = Left
+          Margins.Right = 10.000000000000000000
+          Position.X = 50.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = '2'
+        end
+        object btTres: TButton
+          Align = Left
+          Position.X = 100.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 6
+          Text = '3'
+        end
+      end
+      object liSegundaLinha: TLayout
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 50.000000000000000000
+        Size.Width = 140.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        object btCinco: TButton
+          Align = Left
+          Margins.Right = 10.000000000000000000
+          Position.X = 50.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = '5'
+        end
+        object btSeis: TButton
+          Align = Left
+          Position.X = 100.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 6
+          Text = '6'
+        end
+        object btQuatro: TButton
+          Align = Left
+          Margins.Right = 10.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          Text = '4'
+        end
+      end
+      object liQuartaLinha: TLayout
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 150.000000000000000000
+        Size.Width = 140.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object btZero: TButton
+          Align = Left
+          Margins.Left = 50.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Position.X = 50.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = '0'
+        end
+        object btCalcular: TButton
+          Align = Left
+          Position.X = 100.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          Text = '='
+          OnClick = btCalcularClick
+        end
+      end
+    end
+    object liOperacoes: TLayout
+      Align = Right
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Position.X = 160.000000000000000000
+      Position.Y = 67.000000000000000000
+      Size.Width = 40.000000000000000000
+      Size.Height = 214.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      object btDivisao: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Size.Width = 40.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        Text = '/'
+      end
+      object btMultiplicacao: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 50.000000000000000000
+        Size.Width = 40.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'x'
+      end
+      object btSubtracao: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 100.000000000000000000
+        Size.Width = 40.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = '-'
+      end
+      object btAdicao: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 150.000000000000000000
+        Size.Width = 40.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = '+'
+      end
+    end
+    object Layout1: TLayout
+      Align = Right
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Position.X = 30.000000000000000000
+      Position.Y = 67.000000000000000000
+      Size.Width = 120.000000000000000000
+      Size.Height = 214.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      object Button1: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Size.Width = 120.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'sqrt'
+      end
+      object Button2: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 50.000000000000000000
+        Size.Width = 120.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'x'#170
+      end
+      object Button3: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 100.000000000000000000
+        Size.Width = 120.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Fibonacci'
+      end
+    end
+  end
+end
