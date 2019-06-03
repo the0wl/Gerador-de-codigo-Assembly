@@ -22,3 +22,8 @@ Calculadora que a partir de uma fórmula em notação polonesa inversa gera o re
     </tr>
 </table>
 
+Requisitos da calculadora:
+* Operações matemáticas básicas (Soma, subtraçao, multiplicação e divisão)
+* Raiz quadrada
+* Potênciação
+* Fibonacci
