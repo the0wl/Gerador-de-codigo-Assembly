@@ -2,12 +2,12 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2019/05/25 19:30:33.000.411,=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
-    <Transaction>2019/05/25 19:57:42.000.831,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\CalculadoraAssembly.dproj</Transaction>
-    <Transaction>2019/05/25 19:57:51.000.183,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.pas</Transaction>
-    <Transaction>2019/05/25 19:57:51.000.183,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Unit1.fmx=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.fmx</Transaction>
-    <Transaction>2019/05/25 19:58:22.000.085,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.fmx=C:\Users\Kelvin\Desktop\Programação\Delphi\Calculadora Assembly\Main.fmx</Transaction>
-    <Transaction>2019/05/25 19:58:22.000.085,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.pas=C:\Users\Kelvin\Desktop\Programação\Delphi\Calculadora Assembly\Main.pas</Transaction>
-    <Transaction>2019/05/25 19:58:25.000.801,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\CalculadoraAssembly.dproj=C:\Users\Kelvin\Desktop\Programação\Delphi\Calculadora Assembly\CalculadoraAssembly.dproj</Transaction>
+    <Transaction>2019/05/25 19:57:42.000.831,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\CalculadoraAssembly.dproj=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2019/05/25 19:57:51.000.183,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.fmx=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>2019/05/25 19:57:51.000.183,C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.pas=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2019/05/25 19:58:22.000.085,C:\Users\Kelvin\Desktop\Programação\Delphi\Calculadora Assembly\Main.pas=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.pas</Transaction>
+    <Transaction>2019/05/25 19:58:22.000.085,C:\Users\Kelvin\Desktop\Programação\Delphi\Calculadora Assembly\Main.fmx=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\Main.fmx</Transaction>
+    <Transaction>2019/05/25 19:58:25.000.801,C:\Users\Kelvin\Desktop\Programação\Delphi\Calculadora Assembly\CalculadoraAssembly.dproj=C:\Users\Kelvin\Documents\Embarcadero\Studio\Projects\CalculadoraAssembly.dproj</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<NoProfile iOSSimulator="iPhone5"/>

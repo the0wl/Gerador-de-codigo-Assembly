@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Layouts,
-  FMX.StdCtrls, FMX.Controls.Presentation, FMX.Edit;
+  FMX.StdCtrls, FMX.Controls.Presentation, FMX.Edit, Math;
 
 type
   TInteiro = record
@@ -67,6 +67,8 @@ type
     procedure Subtracao;
     procedure Multiplicacao;
     procedure Divisao;
+    procedure RaizQuadrada;
+    procedure Potencia;
     procedure AdicionarVariaveis(pNome: String; pPosicao: Integer; pElemento: TCalculo; pAdicionaPVAR: Boolean = True);
   protected
   public
@@ -160,6 +162,23 @@ begin
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
     end;
 
+    if GVetSinais[i].Value = 'sqrt' then
+    begin
+      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+      GVetCalculos[iCalculos-1].Value      := sqrt(GVetInteger[0].Value);
+      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+    end;
+
+    if GVetSinais[i].Value = '^' then
+    begin
+      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+      GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+      GVetCalculos[iCalculos-1].Value      := Power(GVetInteger[0].Value, GVetInteger[1].Value);
+      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+    end;
+
     Realocar;
   end;
 
@@ -181,7 +200,7 @@ var
   wTipoDeVariavel: String;
   i: Integer;
 
-  wVetorOperacoesAdicionadas: array[0..3] of Boolean; // Operacoes que ja foram implementadas no codigo
+  wVetorOperacoesAdicionadas: array[0..5] of Boolean; // Operacoes que ja foram implementadas no codigo
 
   procedure Inicializar;
   var
@@ -193,7 +212,12 @@ var
     for wCont := 1 to High(wVetorOperacoesAdicionadas) do // Vetor com os tipos de funcoes
       wVetorOperacoesAdicionadas[wCont] := False;
 
-    GCodigoAssembly := '.data' + #13#10 + 'PVAR' + #13#10 + '.text' + #13#10 + 'main:' + #13#10 + 'CODIGO' + #13#10;
+    GCodigoAssembly := '.data' + #13#10 +
+                       '  var_sqrt: .word 0x2' + #13#10 +
+                       'PVAR' + #13#10 +
+                       '.text' + #13#10 +
+                       'main:' + #13#10 +
+                       'CODIGO' + #13#10;
   end;
 
 begin
@@ -267,6 +291,36 @@ begin
         Divisao;
       end;
 
+    end
+    else if GVetCalculos[i].Operation = 'sqrt' then
+    begin
+
+      wTipoDeVariavel := 'var_sqrt';
+      GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  la $t1, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].FirstValue.ToString + #13#10 +
+                                                  '  la $t2, var_sqrt' + #13#10 +
+                                                  '  jal SQRT' + #13#10 + 'CODIGO', []);
+
+      if not wVetorOperacoesAdicionadas[4] then
+      begin
+        wVetorOperacoesAdicionadas[4] := True;
+        Divisao;
+      end;
+
+    end
+    else if GVetCalculos[i].Operation = '^' then
+    begin
+
+      wTipoDeVariavel := 'var_pote';
+      GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  la $t1, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].FirstValue.ToString + #13#10 +
+                                                  '  la $t2, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].LastValue.ToString + #13#10 +
+                                                  '  jal SQRT' + #13#10 + 'CODIGO', []);
+
+      if not wVetorOperacoesAdicionadas[5] then
+      begin
+        wVetorOperacoesAdicionadas[5] := True;
+        Divisao;
+      end;
+
     end;
 
     if i < High(GVetCalculos) then
@@ -282,7 +336,7 @@ begin
   CloseFile(wArquivo);
 end;
 
-procedure TForm1.AlocaRegistradores(pPosAlocada: Integer);
+procedure TForm1.AlocaRegistradores(pPosAlocada: Integer); // realizar melhora para exibir todos registradores e quais estao ocupados
   begin
     if not GVetorRegistradores[pPosAlocada] then
     begin
@@ -337,6 +391,42 @@ begin
                      '  lw $t3, 0($t1)'                    + #13#10 +
                      '  lw $t4, 0($t2)'                    + #13#10 +
                      '  div $7, $t3, $t4'                  + #13#10 +
+                     '  jr $ra';
+end;
+
+procedure TForm1.RaizQuadrada;
+begin
+  AlocaRegistradores(7);
+
+  GCodigoAssembly := GCodigoAssembly + #13#10 + 'SQRT: ' + #13#10 +
+                     '  lw $t3, 0($t1)' + #13#10 +
+                     '  lw $t4, 0($t2)' + #13#10 +
+                     '  lw $a1, 0($t1)' + #13#10 +    // x = n
+                     '  div $a2, $t3, $t4' + #13#10 + // n/2
+                     '  j FORS' + #13#10 +
+                     #13#10 +
+                     'FORS' + #13#10 +
+                     '  div $a3, $t3, a1' + #13#10 +  // n / x
+                     '  add $a4, $a4, $a3' + #13#10 +  // x + (n / x)
+                     '  div $a1, $a4, $t4' + #13#10 + // x + (n / x) / 2
+                     '  addi $a5, $a5, 1' + #13#10 + // i ++
+                     '  bne  $a5, $a2, FORS' + #13#10 +
+                     '  jr $ra';
+end;
+
+procedure TForm1.Potencia;
+begin
+  AlocaRegistradores(8);
+
+  GCodigoAssembly := GCodigoAssembly + #13#10 + 'SQRT: ' + #13#10 +
+                     '  lw $t3, 0($t1)' + #13#10 +
+                     '  lw $t4, 0($t2)' + #13#10 +
+                     '  j FORP' + #13#10 +
+                     #13#10 +
+                     'FORP' + #13#10 +
+                     '  mul $a3, $t3, $t3' + #13#10 +  // x * x
+                     '  addi $a1, $a1, 1' + #13#10 + // i ++
+                     '  bne  $a1, $t4, FORP' + #13#10 +
                      '  jr $ra';
 end;
 
