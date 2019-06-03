@@ -19,7 +19,6 @@ object Form1: TForm1
       Touch.InteractiveGestures = [LongTap, DoubleTap]
       Align = Top
       TabOrder = 0
-      Text = '2 3 + 9 4 - 7 2 * 8 2 /'
       Position.X = 20.000000000000000000
       Position.Y = 20.000000000000000000
       Margins.Left = 20.000000000000000000
@@ -55,6 +54,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 5
           Text = '8'
+          OnClick = btOitoClick
         end
         object btSete: TButton
           Align = Left
@@ -64,6 +64,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 4
           Text = '7'
+          OnClick = btSeteClick
         end
         object btNove: TButton
           Align = Left
@@ -73,6 +74,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 6
           Text = '9'
+          OnClick = btNoveClick
         end
       end
       object liTerceiraLinha: TLayout
@@ -91,6 +93,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 4
           Text = '1'
+          OnClick = btUmClick
         end
         object btDois: TButton
           Align = Left
@@ -101,6 +104,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 5
           Text = '2'
+          OnClick = btDoisClick
         end
         object btTres: TButton
           Align = Left
@@ -110,6 +114,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 6
           Text = '3'
+          OnClick = btTresClick
         end
       end
       object liSegundaLinha: TLayout
@@ -129,6 +134,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 5
           Text = '5'
+          OnClick = btCincoClick
         end
         object btSeis: TButton
           Align = Left
@@ -138,6 +144,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 6
           Text = '6'
+          OnClick = btSeisClick
         end
         object btQuatro: TButton
           Align = Left
@@ -147,6 +154,7 @@ object Form1: TForm1
           Size.PlatformDefault = False
           TabOrder = 4
           Text = '4'
+          OnClick = btQuatroClick
         end
       end
       object liQuartaLinha: TLayout
@@ -159,14 +167,14 @@ object Form1: TForm1
         TabOrder = 0
         object btZero: TButton
           Align = Left
-          Margins.Left = 50.000000000000000000
           Margins.Right = 10.000000000000000000
           Position.X = 50.000000000000000000
           Size.Width = 40.000000000000000000
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
-          TabOrder = 5
+          TabOrder = 6
           Text = '0'
+          OnClick = btZeroClick
         end
         object btCalcular: TButton
           Align = Left
@@ -177,6 +185,16 @@ object Form1: TForm1
           TabOrder = 4
           Text = '='
           OnClick = btCalcularClick
+        end
+        object btLimpar: TButton
+          Align = Left
+          Margins.Right = 10.000000000000000000
+          Size.Width = 40.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = 'C'
+          OnClick = btLimparClick
         end
       end
     end
@@ -198,6 +216,7 @@ object Form1: TForm1
         Size.PlatformDefault = False
         TabOrder = 3
         Text = '/'
+        OnClick = btDivisaoClick
       end
       object btMultiplicacao: TButton
         Align = Top
@@ -208,6 +227,7 @@ object Form1: TForm1
         Size.PlatformDefault = False
         TabOrder = 2
         Text = 'x'
+        OnClick = btMultiplicacaoClick
       end
       object btSubtracao: TButton
         Align = Top
@@ -218,6 +238,7 @@ object Form1: TForm1
         Size.PlatformDefault = False
         TabOrder = 1
         Text = '-'
+        OnClick = btSubtracaoClick
       end
       object btAdicao: TButton
         Align = Top
@@ -228,6 +249,7 @@ object Form1: TForm1
         Size.PlatformDefault = False
         TabOrder = 0
         Text = '+'
+        OnClick = btAdicaoClick
       end
     end
     object Layout1: TLayout
@@ -240,34 +262,48 @@ object Form1: TForm1
       Size.Height = 214.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
-      object Button1: TButton
+      object btsqrt: TButton
         Align = Top
         Margins.Bottom = 10.000000000000000000
         Size.Width = 120.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 2
-        Text = 'sqrt'
+        TabOrder = 3
+        Text = #8730' (raiz quadrada)'
+        OnClick = btsqrtClick
       end
-      object Button2: TButton
+      object btpotencia: TButton
         Align = Top
         Margins.Bottom = 10.000000000000000000
         Position.Y = 50.000000000000000000
         Size.Width = 120.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 1
-        Text = 'x'#170
+        TabOrder = 2
+        Text = '^ (Pot'#234'ncia)'
+        OnClick = btpotenciaClick
       end
-      object Button3: TButton
+      object btfibonacci: TButton
         Align = Top
         Margins.Bottom = 10.000000000000000000
         Position.Y = 100.000000000000000000
         Size.Width = 120.000000000000000000
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'f (Fibonacci)'
+        OnClick = btfibonacciClick
+      end
+      object btEspaco: TButton
+        Align = Top
+        Margins.Bottom = 10.000000000000000000
+        Position.Y = 150.000000000000000000
+        Size.Width = 120.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
         TabOrder = 0
-        Text = 'Fibonacci'
+        Text = 'Barra de espa'#231'o'
+        OnClick = btEspacoClick
       end
     end
   end

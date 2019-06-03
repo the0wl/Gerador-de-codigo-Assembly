@@ -1,4 +1,4 @@
-unit Main;
+Ôªøunit Main;
 
 interface
 
@@ -47,11 +47,32 @@ type
     btSubtracao: TButton;
     btAdicao: TButton;
     Layout1: TLayout;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
+    btsqrt: TButton;
+    btpotencia: TButton;
+    btfibonacci: TButton;
     btCalcular: TButton;
+    btEspaco: TButton;
+    btLimpar: TButton;
     procedure btCalcularClick(Sender: TObject);
+    procedure btEspacoClick(Sender: TObject);
+    procedure btfibonacciClick(Sender: TObject);
+    procedure btpotenciaClick(Sender: TObject);
+    procedure btsqrtClick(Sender: TObject);
+    procedure btDivisaoClick(Sender: TObject);
+    procedure btMultiplicacaoClick(Sender: TObject);
+    procedure btSubtracaoClick(Sender: TObject);
+    procedure btAdicaoClick(Sender: TObject);
+    procedure btUmClick(Sender: TObject);
+    procedure btDoisClick(Sender: TObject);
+    procedure btTresClick(Sender: TObject);
+    procedure btZeroClick(Sender: TObject);
+    procedure btSeisClick(Sender: TObject);
+    procedure btCincoClick(Sender: TObject);
+    procedure btQuatroClick(Sender: TObject);
+    procedure btNoveClick(Sender: TObject);
+    procedure btOitoClick(Sender: TObject);
+    procedure btSeteClick(Sender: TObject);
+    procedure btLimparClick(Sender: TObject);
   private
     GCalculo: String;
     GCodigoAssembly: String;
@@ -69,6 +90,7 @@ type
     procedure Divisao;
     procedure RaizQuadrada;
     procedure Potencia;
+    function fibonacci(pElemento: Integer): Integer;
     procedure AdicionarVariaveis(pNome: String; pPosicao: Integer; pElemento: TCalculo; pAdicionaPVAR: Boolean = True);
   protected
   public
@@ -81,6 +103,11 @@ var
 implementation
 
 {$R *.fmx}
+
+procedure TForm1.btAdicaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '+';
+end;
 
 procedure TForm1.btCalcularClick(Sender: TObject);
 var
@@ -162,7 +189,7 @@ begin
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
     end;
 
-    if GVetSinais[i].Value = 'sqrt' then
+    if GVetSinais[i].Value = '‚àö' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
@@ -179,6 +206,14 @@ begin
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
     end;
 
+    if GVetSinais[i].Value = 'f' then
+    begin
+      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+      GVetCalculos[iCalculos-1].Value      := fibonacci(GVetInteger[0].Value);
+      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+    end;
+
     Realocar;
   end;
 
@@ -192,6 +227,96 @@ begin
   end;
 
   CriarArquivo;
+end;
+
+procedure TForm1.btCincoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '5';
+end;
+
+procedure TForm1.btDivisaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '/';
+end;
+
+procedure TForm1.btDoisClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '2';
+end;
+
+procedure TForm1.btMultiplicacaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '*';
+end;
+
+procedure TForm1.btNoveClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '9';
+end;
+
+procedure TForm1.btOitoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '8';
+end;
+
+procedure TForm1.btQuatroClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '4';
+end;
+
+procedure TForm1.btSeisClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '6';
+end;
+
+procedure TForm1.btSeteClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '7';
+end;
+
+procedure TForm1.btSubtracaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '-';
+end;
+
+procedure TForm1.btTresClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '3';
+end;
+
+procedure TForm1.btUmClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '1';
+end;
+
+procedure TForm1.btZeroClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '0';
+end;
+
+procedure TForm1.btsqrtClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '‚àö';
+end;
+
+procedure TForm1.btpotenciaClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '^';
+end;
+
+procedure TForm1.btfibonacciClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + 'f';
+end;
+
+procedure TForm1.btLimparClick(Sender: TObject);
+begin
+  edExpressao.Text := '';
+end;
+
+procedure TForm1.btEspacoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + ' ';
 end;
 
 procedure TForm1.CriarArquivo();
@@ -221,7 +346,7 @@ var
   end;
 
 begin
-  AssignFile(wArquivo, 'CÛdigo assembly.mars');
+  AssignFile(wArquivo, 'C√≥digo assembly.mars');
   Rewrite(wArquivo);
   Inicializar;
 
@@ -238,7 +363,7 @@ begin
                                                   '  la $t2, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].LastValue.ToString + #13#10 +
                                                   '  jal SOMA' + #13#10 + 'CODIGO', []);
 
-      // Se a funÁ„o de soma ainda n„o foi utilizada declara ela no fim do codigo
+      // Se a fun√ß√£o de soma ainda n√£o foi utilizada declara ela no fim do codigo
       if not wVetorOperacoesAdicionadas[0] then
       begin
         wVetorOperacoesAdicionadas[0] := True;
@@ -345,7 +470,7 @@ procedure TForm1.AlocaRegistradores(pPosAlocada: Integer); // realizar melhora p
     else
     begin
       {$IFDEF DEBUG}
-      showMessage('O registrador $' + pPosAlocada.ToString + ' j· est· alocado');
+      showMessage('O registrador $' + pPosAlocada.ToString + ' j√° est√° alocado');
       {$ENDIF}
     end;
   end;
@@ -428,6 +553,26 @@ begin
                      '  addi $a1, $a1, 1' + #13#10 + // i ++
                      '  bne  $a1, $t4, FORP' + #13#10 +
                      '  jr $ra';
+end;
+
+function TForm1.fibonacci(pElemento: Integer): Integer;
+var
+  a, b, c, i: Integer;
+begin
+  a := 0;
+  b := 1;
+
+  if pElemento = 0 then
+    Result := a;
+
+  for i := 2 to pElemento do
+  begin
+     c := a + b;
+     a := b;
+     b := c;
+  end;
+
+  Result := b;
 end;
 
 procedure TForm1.AdicionarVariaveis(pNome: String; pPosicao: Integer; pElemento: TCalculo; pAdicionaPVAR: Boolean = True);
