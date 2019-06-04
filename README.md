@@ -27,3 +27,8 @@ Requisitos da calculadora:
 * Raiz quadrada
 * Potênciação
 * Fibonacci
+
+<p>Aparencia inicial do programa</p>
+<p align="center">
+  <img src="/images/raw-project.png?raw=true">
+</p>
