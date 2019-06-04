@@ -14,6 +14,7 @@ type
   end;
   TSinal = record
     Value : String;
+    PossuiParenteses: Boolean;
     Pos   : Integer
   end;
   TCalculo = record
@@ -124,7 +125,7 @@ var
   end;
 
 begin
-  GCalculo := edExpressao.Text;
+  GCalculo := Trim(edExpressao.Text);
 
   iInteger  := 0;
   iSinais   := 0;
@@ -132,9 +133,7 @@ begin
 
   for i := 0 to High(GCalculo) do
   begin
-    if (GCalculo[i] = '') or (GCalculo[i] = ' ') then
-      Continue
-    else if GCalculo[i] in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] then
+    if GCalculo[i] in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] then
     begin
       inc(iInteger);
       SetLength(GVetInteger, iInteger);
@@ -146,6 +145,7 @@ begin
       inc(iSinais);
       SetLength(GVetSinais, iSinais);
       GVetSinais[iSinais-1].Value := GCalculo[i];
+      GVetSinais[iSinais-1].PossuiParenteses := GCalculo[i-1] in ['+', '-', '*', '/', '√', '^', 'f'];
       GVetSinais[iSinais-1].Pos := iSinais-1;
     end;
   end;
@@ -454,7 +454,7 @@ begin
 
       wTipoDeVariavel := 'var_fibo';
       GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  la $t1, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].FirstValue.ToString + #13#10 +
-                                                        '  la $t2, ' + wTipoDeVariavel + i.ToString + '_' + 0 + #13#10 +
+                                                        '  la $t2, ' + wTipoDeVariavel + i.ToString + '_0' + #13#10 +
                                                         '  jal FIBO' + #13#10 + 'CODIGO', []);
 
       if not wVetorOperacoesAdicionadas[6] then

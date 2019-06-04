@@ -53,6 +53,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 5
+          TabStop = False
           Text = '8'
           OnClick = btOitoClick
         end
@@ -63,6 +64,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 4
+          TabStop = False
           Text = '7'
           OnClick = btSeteClick
         end
@@ -73,6 +75,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 6
+          TabStop = False
           Text = '9'
           OnClick = btNoveClick
         end
@@ -92,6 +95,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 4
+          TabStop = False
           Text = '1'
           OnClick = btUmClick
         end
@@ -103,6 +107,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 5
+          TabStop = False
           Text = '2'
           OnClick = btDoisClick
         end
@@ -113,6 +118,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 6
+          TabStop = False
           Text = '3'
           OnClick = btTresClick
         end
@@ -133,6 +139,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 5
+          TabStop = False
           Text = '5'
           OnClick = btCincoClick
         end
@@ -143,6 +150,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 6
+          TabStop = False
           Text = '6'
           OnClick = btSeisClick
         end
@@ -153,6 +161,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 4
+          TabStop = False
           Text = '4'
           OnClick = btQuatroClick
         end
@@ -173,6 +182,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 6
+          TabStop = False
           Text = '0'
           OnClick = btZeroClick
         end
@@ -183,6 +193,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 4
+          TabStop = False
           Text = '='
           OnClick = btCalcularClick
         end
@@ -193,6 +204,7 @@ object Form1: TForm1
           Size.Height = 40.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 5
+          TabStop = False
           Text = 'C'
           OnClick = btLimparClick
         end
@@ -215,6 +227,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 3
+        TabStop = False
         Text = '/'
         OnClick = btDivisaoClick
       end
@@ -226,6 +239,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
+        TabStop = False
         Text = 'x'
         OnClick = btMultiplicacaoClick
       end
@@ -237,6 +251,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
+        TabStop = False
         Text = '-'
         OnClick = btSubtracaoClick
       end
@@ -248,6 +263,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
+        TabStop = False
         Text = '+'
         OnClick = btAdicaoClick
       end
@@ -269,6 +285,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 3
+        TabStop = False
         Text = #8730' (raiz quadrada)'
         OnClick = btsqrtClick
       end
@@ -280,6 +297,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
+        TabStop = False
         Text = '^ (Pot'#234'ncia)'
         OnClick = btpotenciaClick
       end
@@ -291,6 +309,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
+        TabStop = False
         Text = 'f (Fibonacci)'
         OnClick = btfibonacciClick
       end
@@ -302,6 +321,7 @@ object Form1: TForm1
         Size.Height = 40.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
+        TabStop = False
         Text = 'Barra de espa'#231'o'
         OnClick = btEspacoClick
       end
