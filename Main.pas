@@ -91,6 +91,7 @@ type
     procedure RaizQuadrada;
     procedure Potencia;
     function fibonacci(pElemento: Integer): Integer;
+    procedure FibonacciAssembly;
     procedure AdicionarVariaveis(pNome: String; pPosicao: Integer; pElemento: TCalculo; pAdicionaPVAR: Boolean = True);
   protected
   public
@@ -209,6 +210,7 @@ begin
     if GVetSinais[i].Value = 'f' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+      GVetCalculos[iCalculos-1].LastValue  := 0;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
       GVetCalculos[iCalculos-1].Value      := fibonacci(GVetInteger[0].Value);
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
@@ -325,7 +327,7 @@ var
   wTipoDeVariavel: String;
   i: Integer;
 
-  wVetorOperacoesAdicionadas: array[0..5] of Boolean; // Operacoes que ja foram implementadas no codigo
+  wVetorOperacoesAdicionadas: array[0..6] of Boolean; // Operacoes que ja foram implementadas no codigo
 
   procedure Inicializar;
   var
@@ -428,7 +430,7 @@ begin
       if not wVetorOperacoesAdicionadas[4] then
       begin
         wVetorOperacoesAdicionadas[4] := True;
-        Divisao;
+        RaizQuadrada;
       end;
 
     end
@@ -443,7 +445,22 @@ begin
       if not wVetorOperacoesAdicionadas[5] then
       begin
         wVetorOperacoesAdicionadas[5] := True;
-        Divisao;
+        Potencia;
+      end;
+
+    end
+    else if GVetCalculos[i].Operation = 'f' then
+    begin
+
+      wTipoDeVariavel := 'var_fibo';
+      GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  la $t1, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].FirstValue.ToString + #13#10 +
+                                                        '  la $t2, ' + wTipoDeVariavel + i.ToString + '_' + 0 + #13#10 +
+                                                        '  jal FIBO' + #13#10 + 'CODIGO', []);
+
+      if not wVetorOperacoesAdicionadas[6] then
+      begin
+        wVetorOperacoesAdicionadas[6] := True;
+        FibonacciAssembly;
       end;
 
     end;
@@ -543,7 +560,7 @@ procedure TForm1.Potencia;
 begin
   AlocaRegistradores(8);
 
-  GCodigoAssembly := GCodigoAssembly + #13#10 + 'SQRT: ' + #13#10 +
+  GCodigoAssembly := GCodigoAssembly + #13#10 + 'POTE: ' + #13#10 +
                      '  lw $t3, 0($t1)' + #13#10 +
                      '  lw $t4, 0($t2)' + #13#10 +
                      '  j FORP' + #13#10 +
@@ -552,6 +569,29 @@ begin
                      '  mul $a3, $t3, $t3' + #13#10 +  // x * x
                      '  addi $a1, $a1, 1' + #13#10 + // i ++
                      '  bne  $a1, $t4, FORP' + #13#10 +
+                     '  jr $ra';
+end;
+
+procedure TForm1.FibonacciAssembly;
+begin
+  AlocaRegistradores(9);
+
+  GCodigoAssembly := GCodigoAssembly + #13#10 + 'FIBO: ' + #13#10 +
+                     '  lw $t3, 0($t1)' + #13#10 +
+                     '  lw $a1, 0($t2)' + #13#10 +
+                     '  beq $t3, $a1, RETURN_B' + #13#10 +
+                     '  addi $t4, $t4, 1' + #13#10 +  // i = 1
+                     '  addi $t5, $t5, 1' + #13#10 +  // b = 1
+                     '  jal RETURN_A' + #13#10 +
+                     #13#10 +
+                     'RETURN_A' + #13#10 +
+                     '  add $t6, $t4, $t5' + #13#10 + // c = a + b
+                     '  move $t4, $t5' + #13#10 + // a = b
+                     '  move $t5, $t6' + #13#10 + // b = c
+                     '  bne $t4, $t3, RETURN_A' + #13#10 + // for i = 1 to pElemento - 1
+                     '  move $v0, $t5' + #13#10 + // result := b
+                     #13#10 +
+                     'RETURN_B' + #13#10 + // if pElemento = 0 then result := 0;
                      '  jr $ra';
 end;
 
