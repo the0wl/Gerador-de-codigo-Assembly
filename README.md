@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="256" height="256" src="/images/under_construction_PNG66.png?raw=true">
+</p>
+
 # Calculadora-Assembly
 Calculadora que a partir de uma fórmula em notação polonesa inversa gera o respectivo código do cálculo em assembly, que é guardado em um arquivo.
 
