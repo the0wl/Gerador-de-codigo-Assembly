@@ -1,10 +1,33 @@
 .data
-  var_sqrt: .word 0x2
-  0_8: .word 0x8
-  0_0: .word 0x0
+  var_soma0_3: .word 0x3
+  var_soma0_6: .word 0x6
+  var_subt1_9: .word 0x9
+  var_subt1_2: .word 0x2
+  var_soma2_9: .word 0x9
+  var_soma2_7: .word 0x7
 
 .text
 main:
+  la $t1, var_soma0_3
+  la $t2, var_soma0_6
+  jal SOMA
+  la $t1, var_subt1_9
+  la $t2, var_subt1_2
+  jal SUBT
+  la $t1, var_soma2_9
+  la $t2, var_soma2_7
+  jal SOMA
   j FIM
+
+SOMA: 
+  lw $t3, 0($t1)
+  lw $t4, 0($t2)
+  add $4, $t3, $t4
+  jr $ra
+SUBT: 
+  lw $t3, 0($t1)
+  lw $t4, 0($t2)
+  sub $5, $t3, $t4
+  jr $ra
 
 FIM:

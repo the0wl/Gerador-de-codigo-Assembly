@@ -21,7 +21,7 @@ type
     FirstValue : Integer;
     LastValue  : Integer;
     Operation  : String;
-    Value      : Double;
+    Value      : Integer;
     Pos        : Integer;
   end;
   TForm1 = class(TForm)
@@ -139,13 +139,14 @@ begin
       SetLength(GVetInteger, iInteger);
       GVetInteger[iInteger-1].Value := StrToInt(GCalculo[i]);
       GVetInteger[iInteger-1].Pos   := iInteger-1;
-    end
-    else
+    end;
+
+    if GCalculo[i] in ['+', '-', '*', '/', 's', '^', 'f'] then
     begin
       inc(iSinais);
       SetLength(GVetSinais, iSinais);
       GVetSinais[iSinais-1].Value := GCalculo[i];
-      GVetSinais[iSinais-1].PossuiParenteses := GCalculo[i-1] in ['+', '-', '*', '/', '√', '^', 'f'];
+      GVetSinais[iSinais-1].PossuiParenteses := GCalculo[i-2] in ['+', '-', '*', '/', 's', '^', 'f'];
       GVetSinais[iSinais-1].Pos := iSinais-1;
     end;
   end;
@@ -156,67 +157,77 @@ begin
     SetLength(GVetCalculos, iCalculos);
     if GVetSinais[i].Value = '+' then
     begin
-      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-      GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value + GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Pos        := iCalculos;
-    end;
-
-    if GVetSinais[i].Value = '-' then
+      if GVetSinais[i].PossuiParenteses then
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value + GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end
+      else
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value + GVetInteger[1].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+        Realocar;
+      end;
+    end
+    else if GVetSinais[i].Value = '-' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
       GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
       GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value - GVetInteger[1].Value;
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-    end;
-
-    if GVetSinais[i].Value = '/' then
+      Realocar;
+    end
+    else if GVetSinais[i].Value = '/' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
       GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value / GVetInteger[1].Value;
+      GVetCalculos[iCalculos-1].Value      := Floor(GVetInteger[0].Value / GVetInteger[1].Value);
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-    end;
-
-    if GVetSinais[i].Value = '*' then
+      Realocar;
+    end
+    else if GVetSinais[i].Value = '*' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
       GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
       GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value * GVetInteger[1].Value;
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-    end;
-
-    if GVetSinais[i].Value = '√' then
+      Realocar;
+    end
+    else if GVetSinais[i].Value = 's' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := sqrt(GVetInteger[0].Value);
+      GVetCalculos[iCalculos-1].Value      := Floor(sqrt(GVetInteger[0].Value));
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-    end;
-
-    if GVetSinais[i].Value = '^' then
+      Realocar(1);
+    end
+    else if GVetSinais[i].Value = '^' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
       GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := Power(GVetInteger[0].Value, GVetInteger[1].Value);
+      GVetCalculos[iCalculos-1].Value      := Floor(Power(GVetInteger[0].Value, GVetInteger[1].Value));
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-    end;
-
-    if GVetSinais[i].Value = 'f' then
+      Realocar;
+    end
+    else if GVetSinais[i].Value = 'f' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
       GVetCalculos[iCalculos-1].LastValue  := 0;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
       GVetCalculos[iCalculos-1].Value      := fibonacci(GVetInteger[0].Value);
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      Realocar(1);
     end;
-
-    Realocar;
   end;
 
   for i := 0 to High(GVetCalculos) do
@@ -298,7 +309,7 @@ end;
 
 procedure TForm1.btsqrtClick(Sender: TObject);
 begin
-  edExpressao.Text := edExpressao.Text + '√';
+  edExpressao.Text := edExpressao.Text + 's';
 end;
 
 procedure TForm1.btpotenciaClick(Sender: TObject);
@@ -340,7 +351,6 @@ var
       wVetorOperacoesAdicionadas[wCont] := False;
 
     GCodigoAssembly := '.data' + #13#10 +
-                       '  var_sqrt: .word 0x2' + #13#10 +
                        'PVAR' + #13#10 +
                        '.text' + #13#10 +
                        'main:' + #13#10 +
@@ -403,8 +413,7 @@ begin
       end;
 
     end
-    else
-    if GVetCalculos[i].Operation = '/' then
+    else if GVetCalculos[i].Operation = '/' then
     begin
 
       wTipoDeVariavel := 'var_divi';
@@ -419,12 +428,11 @@ begin
       end;
 
     end
-    else if GVetCalculos[i].Operation = 'sqrt' then
+    else if GVetCalculos[i].Operation = 's' then
     begin
 
       wTipoDeVariavel := 'var_sqrt';
       GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  la $t1, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].FirstValue.ToString + #13#10 +
-                                                  '  la $t2, var_sqrt' + #13#10 +
                                                   '  jal SQRT' + #13#10 + 'CODIGO', []);
 
       if not wVetorOperacoesAdicionadas[4] then
@@ -440,7 +448,7 @@ begin
       wTipoDeVariavel := 'var_pote';
       GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  la $t1, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].FirstValue.ToString + #13#10 +
                                                   '  la $t2, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].LastValue.ToString + #13#10 +
-                                                  '  jal SQRT' + #13#10 + 'CODIGO', []);
+                                                  '  jal POTE' + #13#10 + 'CODIGO', []);
 
       if not wVetorOperacoesAdicionadas[5] then
       begin
@@ -455,7 +463,10 @@ begin
       wTipoDeVariavel := 'var_fibo';
       GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  la $t1, ' + wTipoDeVariavel + i.ToString + '_' + GVetCalculos[i].FirstValue.ToString + #13#10 +
                                                         '  la $t2, ' + wTipoDeVariavel + i.ToString + '_0' + #13#10 +
-                                                        '  jal FIBO' + #13#10 + 'CODIGO', []);
+                                                        '  jal FIBO' + #13#10 +
+                                                        #13#10 +
+                                                        'CONTINUE:' + #13#10 +
+                                                        'CODIGO', []);
 
       if not wVetorOperacoesAdicionadas[6] then
       begin
@@ -472,7 +483,7 @@ begin
   end;
 
   GCodigoAssembly := StringReplace(GCodigoAssembly, 'CODIGO', '  j FIM', []);
-  GCodigoAssembly := GCodigoAssembly + #13#10 + 'FIM:';
+  GCodigoAssembly := GCodigoAssembly + #13#10#13#10 + 'FIM:';
 
   WriteLn(wArquivo, GCodigoAssembly);
   CloseFile(wArquivo);
@@ -542,34 +553,48 @@ begin
 
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'SQRT: ' + #13#10 +
                      '  lw $t3, 0($t1)' + #13#10 +
-                     '  lw $t4, 0($t2)' + #13#10 +
-                     '  lw $a1, 0($t1)' + #13#10 +    // x = n
-                     '  div $a2, $t3, $t4' + #13#10 + // n/2
-                     '  j FORS' + #13#10 +
+                     '  addi $v0, $v0, 0' + #13#10 + // n = 0
+                     '  addi $t4, $t4, 1' + #13#10 + // i = 1
+                     '  j WHILES' + #13#10 +
                      #13#10 +
-                     'FORS' + #13#10 +
-                     '  div $a3, $t3, a1' + #13#10 +  // n / x
-                     '  add $a4, $a4, $a3' + #13#10 +  // x + (n / x)
-                     '  div $a1, $a4, $t4' + #13#10 + // x + (n / x) / 2
-                     '  addi $a5, $a5, 1' + #13#10 + // i ++
-                     '  bne  $a5, $a2, FORS' + #13#10 +
+                     'WHILES:' + #13#10 +
+                     '  sub $t5, $t3, $t4' + #13#10 + // teste $t5 = m - i
+                     '  bltz $t5, RETORNA' + #13#10 + // se (m - i) < 0 entao m é menor que i, logo while(m >= i)
+                     '  move $t3, $t5' + #13#10 +     // m - i
+                     '  addi $t4, $t4, 2' + #13#10 +  // i + 2
+                     '  addi $v0, $v0, 1' + #13#10 +  // n + 1
+                     '  j WHILES' + #13#10 +
+                     #13#10 +
+                     'RETORNA:' + #13#10 +
                      '  jr $ra';
+
+   // FORMULA RAIZ QUADRADA : Equação de Pell
+   // n = 0
+   // i = 1
+   // while (m >= i){
+   //    m = m – i;
+   //    i = i + 2;
+   //    n = n + 1;
+   // }
 end;
 
 procedure TForm1.Potencia;
 begin
   AlocaRegistradores(8);
 
-  GCodigoAssembly := GCodigoAssembly + #13#10 + 'POTE: ' + #13#10 +
+  GCodigoAssembly := GCodigoAssembly + #13#10 +
+                     'RETORNAP:' + #13#10 +
+                     #13#10 +
+                     'POTE: ' + #13#10 +
                      '  lw $t3, 0($t1)' + #13#10 +
                      '  lw $t4, 0($t2)' + #13#10 +
                      '  j FORP' + #13#10 +
                      #13#10 +
-                     'FORP' + #13#10 +
-                     '  mul $a3, $t3, $t3' + #13#10 +  // x * x
-                     '  addi $a1, $a1, 1' + #13#10 + // i ++
-                     '  bne  $a1, $t4, FORP' + #13#10 +
-                     '  jr $ra';
+                     'FORP:' + #13#10 +
+                     '  mul $v0, $v0, $t3' + #13#10 +  // x * x
+                     '  addi $t5, $t5, 1' + #13#10 + // i ++
+                     '  bne  $t5, $t4, FORP' + #13#10 +
+                     '  j RETORNAP';
 end;
 
 procedure TForm1.FibonacciAssembly;
@@ -578,20 +603,23 @@ begin
 
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'FIBO: ' + #13#10 +
                      '  lw $t3, 0($t1)' + #13#10 +
-                     '  lw $a1, 0($t2)' + #13#10 +
-                     '  beq $t3, $a1, RETURN_B' + #13#10 +
-                     '  addi $t4, $t4, 1' + #13#10 +  // i = 1
-                     '  addi $t5, $t5, 1' + #13#10 +  // b = 1
-                     '  jal RETURN_A' + #13#10 +
+                     '  lw $t4, 0($t2)' + #13#10 +
+                     '  beq $t3, $t4, RETURN_B' + #13#10 +
+                     '  addi $t5, $t5, 1' + #13#10 +
+                     '  addi $t6, $t6, 1' + #13#10 +
+                     '  j RETURN_A' + #13#10 +
                      #13#10 +
-                     'RETURN_A' + #13#10 +
-                     '  add $t6, $t4, $t5' + #13#10 + // c = a + b
-                     '  move $t4, $t5' + #13#10 + // a = b
-                     '  move $t5, $t6' + #13#10 + // b = c
-                     '  bne $t4, $t3, RETURN_A' + #13#10 + // for i = 1 to pElemento - 1
-                     '  move $v0, $t5' + #13#10 + // result := b
+                     'RETURN_A:' + #13#10 +
+                     '  addi $t6, $t6, 1' + #13#10 +
+                     '  add $t7, $t4, $t5' + #13#10 +
+                     '  move $t4, $t5' + #13#10 +
+                     '  move $t5, $t7' + #13#10 +
+                     '  bne $t6, $t3, RETURN_A' + #13#10 +
+                     '  move $v0, $t5' + #13#10 +
+                     '  j FIM' + #13#10 +
                      #13#10 +
-                     'RETURN_B' + #13#10 + // if pElemento = 0 then result := 0;
+                     'RETURN_B:' + #13#10 +
+                     '  move $v0, $t4' + #13#10 +
                      '  jr $ra';
 end;
 

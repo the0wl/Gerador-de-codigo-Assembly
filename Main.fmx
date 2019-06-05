@@ -286,7 +286,7 @@ object Form1: TForm1
         Size.PlatformDefault = False
         TabOrder = 3
         TabStop = False
-        Text = #8730' (raiz quadrada)'
+        Text = 's (raiz quadrada)'
         OnClick = btsqrtClick
       end
       object btpotencia: TButton
