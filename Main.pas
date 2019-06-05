@@ -177,30 +177,63 @@ begin
     end
     else if GVetSinais[i].Value = '-' then
     begin
-      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-      GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value - GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-      Realocar;
+      if GVetSinais[i].PossuiParenteses then
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value - GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end
+      else
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value - GVetInteger[1].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+        Realocar;
+      end;
     end
     else if GVetSinais[i].Value = '/' then
     begin
-      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-      GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := Floor(GVetInteger[0].Value / GVetInteger[1].Value);
-      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-      Realocar;
+    if GVetSinais[i].PossuiParenteses then
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value / GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end
+      else
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := Floor(GVetInteger[0].Value / GVetInteger[1].Value);
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+        Realocar;
+      end;
     end
     else if GVetSinais[i].Value = '*' then
     begin
-      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-      GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value * GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-      Realocar;
+      if GVetSinais[i].PossuiParenteses then
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value * GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end
+      else
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value * GVetInteger[1].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+        Realocar;
+      end;
     end
     else if GVetSinais[i].Value = 's' then
     begin
