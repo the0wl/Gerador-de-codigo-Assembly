@@ -162,7 +162,7 @@ begin
         GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
         GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value + GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetCalculos[iCalculos-3].Value + GVetCalculos[iCalculos-2].Value;
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
       end
       else
@@ -182,7 +182,7 @@ begin
         GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
         GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value - GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetCalculos[iCalculos-3].Value - GVetCalculos[iCalculos-2].Value;
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
       end
       else
@@ -202,7 +202,7 @@ begin
         GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
         GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value / GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Value      := Floor(GVetCalculos[iCalculos-3].Value / GVetCalculos[iCalculos-2].Value);
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
       end
       else
@@ -222,7 +222,7 @@ begin
         GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
         GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := GVetInteger[iCalculos-3].Value * GVetInteger[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Value      := GVetCalculos[iCalculos-3].Value * GVetCalculos[iCalculos-2].Value;
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
       end
       else
@@ -238,6 +238,7 @@ begin
     else if GVetSinais[i].Value = 's' then
     begin
       GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
+      GVetCalculos[iCalculos-1].FirstValue := 0;
       GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
       GVetCalculos[iCalculos-1].Value      := Floor(sqrt(GVetInteger[0].Value));
       GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
