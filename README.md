@@ -39,7 +39,7 @@ Requisitos da calculadora:
 <code>TInteiro = record</code></br>
 <code>Valor : Integer;</code></br>
 <code>Pos   : Integer;</code></br>
-<code>end;</code></br>
+<code>end;</code></br></br>
 
 <p>Tipo de dado do vetor que armazena os valores que serão parametros para os cálculos.</p>
 <b>TSinal</b></br>
@@ -48,7 +48,7 @@ Requisitos da calculadora:
 <code>UtilizaVetorCalculo : Boolean;</code></br>
 <code>PossuiParenteses    : Boolean;</code></br>
 <code>Pos                 : Integer;</code></br>
-<code>end;</code></br>
+<code>end;</code></br></br>
 
 <p>Tipo de dado do vetor que armazena as operações dos cálculos. Os valores <i>UtilizaVetorCalculo</i> e <i>PossuiParenteses</i> são usados para conseguir uma interpretação consisa da notação polonesa reversa.</p>
 <b>TCalculo</b></br>
@@ -58,7 +58,7 @@ Requisitos da calculadora:
 <code>Operacao : String;</code></br>
 <code>Valor    : Integer;</code></br>
 <code>Pos      : Integer;</code></br>
-<code>end;</code></br>
+<code>end;</code></br></br>
 
 <p>Tipo de dado do vetor que armazena os cálculos concluídos.</p>
 
