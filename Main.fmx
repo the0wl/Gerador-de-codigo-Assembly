@@ -1,7 +1,8 @@
-object Form1: TForm1
+object fMain: TfMain
   Left = 0
   Top = 0
-  Caption = 'Form1'
+  ActiveControl = edExpressao
+  Caption = 'Calculadora'
   ClientHeight = 281
   ClientWidth = 380
   Position = ScreenCenter

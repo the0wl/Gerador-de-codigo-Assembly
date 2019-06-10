@@ -3,12 +3,12 @@ program CalculadoraAssembly;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Main in 'Main.pas' {Form1};
+  Main in 'Main.pas' {fMain};
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfMain, fMain);
   Application.Run;
 end.
