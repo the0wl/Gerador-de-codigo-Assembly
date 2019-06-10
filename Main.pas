@@ -14,6 +14,7 @@ type
   end;
   TSinal = record
     Value : String;
+    UtilizaVetorCalculo: Boolean;
     PossuiParenteses: Boolean;
     Pos   : Integer
   end;
@@ -74,6 +75,7 @@ type
     procedure btOitoClick(Sender: TObject);
     procedure btSeteClick(Sender: TObject);
     procedure btLimparClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     GCalculo: String;
     GCodigoAssembly: String;
@@ -84,7 +86,6 @@ type
     GVetCalculos: array of TCalculo;
 
     procedure CriarArquivo;
-    procedure AlocaRegistradores(pPosAlocada: Integer);
     procedure Soma;
     procedure Subtracao;
     procedure Multiplicacao;
@@ -106,14 +107,9 @@ implementation
 
 {$R *.fmx}
 
-procedure TForm1.btAdicaoClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '+';
-end;
-
 procedure TForm1.btCalcularClick(Sender: TObject);
 var
-  i, iInteger, iSinais, iCalculos: Integer;
+  i, iInteger, iSinais, iPos, iCalculos: Integer;
 
   procedure Realocar(pPosicoesApagar: Integer = 2);
   var
@@ -125,29 +121,51 @@ var
   end;
 
 begin
+  SetLength(GVetInteger, 0);
+  SetLength(GVetSinais, 0);
+
   GCalculo := Trim(edExpressao.Text);
 
   iInteger  := 0;
   iSinais   := 0;
+  iPos      := 0;
   iCalculos := 0;
 
   for i := 0 to High(GCalculo) do
   begin
     if GCalculo[i] in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] then
     begin
-      inc(iInteger);
-      SetLength(GVetInteger, iInteger);
-      GVetInteger[iInteger-1].Value := StrToInt(GCalculo[i]);
-      GVetInteger[iInteger-1].Pos   := iInteger-1;
-    end;
+      if GCalculo[i-1] in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] then
+      begin
+        Continue;
+      end
+      else
+      begin
+        inc(iInteger);
+        inc(iPos);
+        SetLength(GVetInteger, iInteger);
+
+        if GCalculo[i+1] in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'] then
+        begin
+          GVetInteger[iInteger-1].Value := StrToInt(GCalculo[i])*10 + StrToInt(GCalculo[i+1]);
+          GVetInteger[iInteger-1].Pos   := iPos-1;
+        end
+        else
+          GVetInteger[iInteger-1].Value := StrToInt(GCalculo[i]);
+          GVetInteger[iInteger-1].Pos   := iPos-1;
+        end;
+      end;
 
     if GCalculo[i] in ['+', '-', '*', '/', 's', '^', 'f'] then
     begin
       inc(iSinais);
+      inc(iPos);
       SetLength(GVetSinais, iSinais);
       GVetSinais[iSinais-1].Value := GCalculo[i];
+      GVetSinais[iSinais-1].UtilizaVetorCalculo := GCalculo[i-4] in ['+', '-', '*', '/', 's', '^', 'f'];
       GVetSinais[iSinais-1].PossuiParenteses := GCalculo[i-2] in ['+', '-', '*', '/', 's', '^', 'f'];
-      GVetSinais[iSinais-1].Pos := iSinais-1;
+      GVetSinais[iSinais-1].Pos := iPos-1;
+      dec(iPos);
     end;
   end;
 
@@ -167,12 +185,21 @@ begin
       end
       else
       begin
-        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        if GVetSinais[i].UtilizaVetorCalculo then
+        begin
+          GVetCalculos[iCalculos-1].FirstValue  := GVetCalculos[High(GVetCalculos) - 1].Value;
+          GVetCalculos[iCalculos-1].LastValue   := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value       := GVetCalculos[High(GVetCalculos) - 1].Value + GVetInteger[GVetSinais[i].Pos - 1].Value;
+        end
+        else
+        begin
+          GVetCalculos[iCalculos-1].FirstValue := GVetInteger[GVetSinais[i].Pos - 2].Value;
+          GVetCalculos[iCalculos-1].LastValue  := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value      := GVetInteger[GVetSinais[i].Pos - 2].Value + GVetInteger[GVetSinais[i].Pos - 1].Value;
+        end;
+
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value + GVetInteger[1].Value;
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-        Realocar;
       end;
     end
     else if GVetSinais[i].Value = '-' then
@@ -187,12 +214,21 @@ begin
       end
       else
       begin
-        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        if GVetSinais[i].UtilizaVetorCalculo then
+        begin
+          GVetCalculos[iCalculos-1].FirstValue  := GVetCalculos[High(GVetCalculos) - 1].Value;
+          GVetCalculos[iCalculos-1].LastValue   := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value       := GVetCalculos[High(GVetCalculos) - 1].Value - GVetInteger[GVetSinais[i].Pos - 1].Value;
+        end
+        else
+        begin
+          GVetCalculos[iCalculos-1].FirstValue := GVetInteger[GVetSinais[i].Pos - 2].Value;
+          GVetCalculos[iCalculos-1].LastValue  := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value      := GVetInteger[GVetSinais[i].Pos - 2].Value - GVetInteger[GVetSinais[i].Pos - 1].Value;
+        end;
+
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value - GVetInteger[1].Value;
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-        Realocar;
       end;
     end
     else if GVetSinais[i].Value = '/' then
@@ -207,12 +243,21 @@ begin
       end
       else
       begin
-        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        if GVetSinais[i].UtilizaVetorCalculo then
+        begin
+          GVetCalculos[iCalculos-1].FirstValue  := GVetCalculos[High(GVetCalculos) - 1].Value;
+          GVetCalculos[iCalculos-1].LastValue   := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value       := Floor(GVetCalculos[High(GVetCalculos) - 1].Value / GVetInteger[GVetSinais[i].Pos - 1].Value);
+        end
+        else
+        begin
+          GVetCalculos[iCalculos-1].FirstValue := GVetInteger[GVetSinais[i].Pos - 2].Value;
+          GVetCalculos[iCalculos-1].LastValue  := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value      := Floor(GVetInteger[GVetSinais[i].Pos - 2].Value / GVetInteger[GVetSinais[i].Pos - 1].Value);
+        end;
+
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := Floor(GVetInteger[0].Value / GVetInteger[1].Value);
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-        Realocar;
       end;
     end
     else if GVetSinais[i].Value = '*' then
@@ -227,40 +272,89 @@ begin
       end
       else
       begin
-        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-        GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
+        if GVetSinais[i].UtilizaVetorCalculo then
+        begin
+          GVetCalculos[iCalculos-1].FirstValue  := GVetCalculos[High(GVetCalculos) - 1].Value;
+          GVetCalculos[iCalculos-1].LastValue   := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value       := GVetCalculos[High(GVetCalculos) - 1].Value * GVetInteger[GVetSinais[i].Pos - 1].Value;
+        end
+        else
+        begin
+          GVetCalculos[iCalculos-1].FirstValue := GVetInteger[GVetSinais[i].Pos - 2].Value;
+          GVetCalculos[iCalculos-1].LastValue  := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value      := GVetInteger[GVetSinais[i].Pos - 2].Value * GVetInteger[GVetSinais[i].Pos - 1].Value;
+        end;
+
         GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-        GVetCalculos[iCalculos-1].Value      := GVetInteger[0].Value * GVetInteger[1].Value;
         GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-        Realocar;
       end;
     end
     else if GVetSinais[i].Value = 's' then
     begin
-      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-      GVetCalculos[iCalculos-1].FirstValue := 0;
-      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := Floor(sqrt(GVetInteger[0].Value));
-      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-      Realocar(1);
+      if GVetSinais[i].PossuiParenteses then
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].LastValue  := 0;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := Floor(sqrt(GVetCalculos[iCalculos-2].Value));
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end
+      else
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[GVetSinais[i].Pos - 2].Value;
+        GVetCalculos[iCalculos-1].LastValue  := 0;
+        GVetCalculos[iCalculos-1].Value      := Floor(sqrt(GVetInteger[GVetSinais[i].Pos - 2].Value));
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end;
     end
     else if GVetSinais[i].Value = '^' then
     begin
-      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-      GVetCalculos[iCalculos-1].LastValue  := GVetInteger[1].Value;
-      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := Floor(Power(GVetInteger[0].Value, GVetInteger[1].Value));
-      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-      Realocar;
+      if GVetSinais[i].PossuiParenteses then
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-3].Value;
+        GVetCalculos[iCalculos-1].LastValue  := GVetCalculos[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := Floor(Power(GVetInteger[iCalculos-3].Value, GVetInteger[iCalculos-2].Value));
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end
+      else
+      begin
+        if GVetSinais[i].UtilizaVetorCalculo then
+        begin
+          GVetCalculos[iCalculos-1].FirstValue  := GVetCalculos[High(GVetCalculos) - 1].Value;
+          GVetCalculos[iCalculos-1].LastValue   := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value       := Floor(Power(GVetCalculos[High(GVetCalculos) - 1].Value, GVetInteger[GVetSinais[i].Pos - 1].Value));
+        end
+        else
+        begin
+          GVetCalculos[iCalculos-1].FirstValue := GVetInteger[GVetSinais[i].Pos - 2].Value;
+          GVetCalculos[iCalculos-1].LastValue  := GVetInteger[GVetSinais[i].Pos - 1].Value;
+          GVetCalculos[iCalculos-1].Value      := Floor(Power(GVetInteger[GVetSinais[i].Pos - 2].Value, GVetInteger[GVetSinais[i].Pos - 1].Value));
+        end;
+
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end;
     end
     else if GVetSinais[i].Value = 'f' then
     begin
-      GVetCalculos[iCalculos-1].FirstValue := GVetInteger[0].Value;
-      GVetCalculos[iCalculos-1].LastValue  := 0;
-      GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
-      GVetCalculos[iCalculos-1].Value      := fibonacci(GVetInteger[0].Value);
-      GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
-      Realocar(1);
+      if GVetSinais[i].PossuiParenteses then
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetCalculos[iCalculos-2].Value;
+        GVetCalculos[iCalculos-1].LastValue  := 0;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := fibonacci(GVetCalculos[iCalculos-2].Value);
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end
+      else
+      begin
+        GVetCalculos[iCalculos-1].FirstValue := GVetInteger[GVetSinais[i].Pos - 1].Value;
+        GVetCalculos[iCalculos-1].LastValue  := 0;
+        GVetCalculos[iCalculos-1].Operation  := GVetSinais[i].Value;
+        GVetCalculos[iCalculos-1].Value      := fibonacci(GVetInteger[GVetSinais[i].Pos - 1].Value);
+        GVetCalculos[iCalculos-1].Pos        := iCalculos-1;
+      end;
     end;
   end;
 
@@ -274,96 +368,6 @@ begin
   end;
 
   CriarArquivo;
-end;
-
-procedure TForm1.btCincoClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '5';
-end;
-
-procedure TForm1.btDivisaoClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '/';
-end;
-
-procedure TForm1.btDoisClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '2';
-end;
-
-procedure TForm1.btMultiplicacaoClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '*';
-end;
-
-procedure TForm1.btNoveClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '9';
-end;
-
-procedure TForm1.btOitoClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '8';
-end;
-
-procedure TForm1.btQuatroClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '4';
-end;
-
-procedure TForm1.btSeisClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '6';
-end;
-
-procedure TForm1.btSeteClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '7';
-end;
-
-procedure TForm1.btSubtracaoClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '-';
-end;
-
-procedure TForm1.btTresClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '3';
-end;
-
-procedure TForm1.btUmClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '1';
-end;
-
-procedure TForm1.btZeroClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '0';
-end;
-
-procedure TForm1.btsqrtClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + 's';
-end;
-
-procedure TForm1.btpotenciaClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + '^';
-end;
-
-procedure TForm1.btfibonacciClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + 'f';
-end;
-
-procedure TForm1.btLimparClick(Sender: TObject);
-begin
-  edExpressao.Text := '';
-end;
-
-procedure TForm1.btEspacoClick(Sender: TObject);
-begin
-  edExpressao.Text := edExpressao.Text + ' ';
 end;
 
 procedure TForm1.CriarArquivo();
@@ -523,71 +527,47 @@ begin
   CloseFile(wArquivo);
 end;
 
-procedure TForm1.AlocaRegistradores(pPosAlocada: Integer); // realizar melhora para exibir todos registradores e quais estao ocupados
-  begin
-    if not GVetorRegistradores[pPosAlocada] then
-    begin
-      GVetorRegistradores[pPosAlocada] := True;
-    end
-    else
-    begin
-      {$IFDEF DEBUG}
-      showMessage('O registrador $' + pPosAlocada.ToString + ' já está alocado');
-      {$ENDIF}
-    end;
-  end;
-
 procedure TForm1.Soma;
 begin
-  AlocaRegistradores(3);
-
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'SOMA: ' + #13#10 +
                      '  lw $t3, 0($t1)'                    + #13#10 +
                      '  lw $t4, 0($t2)'                    + #13#10 +
-                     '  add $4, $t3, $t4'                  + #13#10 +
+                     '  add $s1, $t3, $t4'                  + #13#10 +  // salvará no $s1
                      '  jr $ra';
 end;
 
 procedure TForm1.Subtracao;
 begin
-  AlocaRegistradores(4);
-
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'SUBT: ' + #13#10 +
                      '  lw $t3, 0($t1)'                    + #13#10 +
                      '  lw $t4, 0($t2)'                    + #13#10 +
-                     '  sub $5, $t3, $t4'                  + #13#10 +
+                     '  sub $s2, $t3, $t4'                  + #13#10 +  // salvará no $s2
                      '  jr $ra';
 end;
 
 procedure TForm1.Multiplicacao;
 begin
-  AlocaRegistradores(5);
-
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'MULT: ' + #13#10 +
                      '  lw $t3, 0($t1)'                    + #13#10 +
                      '  lw $t4, 0($t2)'                    + #13#10 +
-                     '  mul $6, $t3, $t4'                  + #13#10 +
+                     '  mul $s3, $t3, $t4'                  + #13#10 +  // salvará no $s3
                      '  jr $ra';
 end;
 
 procedure TForm1.Divisao;
 begin
-  AlocaRegistradores(6);
-
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'DIVI: ' + #13#10 +
                      '  lw $t3, 0($t1)'                    + #13#10 +
                      '  lw $t4, 0($t2)'                    + #13#10 +
-                     '  div $7, $t3, $t4'                  + #13#10 +
+                     '  div $s4, $t3, $t4'                  + #13#10 +  // salvará no $s4
                      '  jr $ra';
 end;
 
 procedure TForm1.RaizQuadrada;
 begin
-  AlocaRegistradores(7);
-
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'SQRT: ' + #13#10 +
                      '  lw $t3, 0($t1)' + #13#10 +
-                     '  addi $v0, $v0, 0' + #13#10 + // n = 0
+                     '  addi $s5, $s5, 0' + #13#10 + // n = 0
                      '  addi $t4, $t4, 1' + #13#10 + // i = 1
                      '  j WHILES' + #13#10 +
                      #13#10 +
@@ -596,7 +576,7 @@ begin
                      '  bltz $t5, RETORNA' + #13#10 + // se (m - i) < 0 entao m é menor que i, logo while(m >= i)
                      '  move $t3, $t5' + #13#10 +     // m - i
                      '  addi $t4, $t4, 2' + #13#10 +  // i + 2
-                     '  addi $v0, $v0, 1' + #13#10 +  // n + 1
+                     '  addi $s5, $s5, 1' + #13#10 +  // n + 1   // salvará no $s5
                      '  j WHILES' + #13#10 +
                      #13#10 +
                      'RETORNA:' + #13#10 +
@@ -614,18 +594,18 @@ end;
 
 procedure TForm1.Potencia;
 begin
-  AlocaRegistradores(8);
-
   GCodigoAssembly := GCodigoAssembly + #13#10 +
                      'RETORNAP:' + #13#10 +
+                     '  jr $ra' +
                      #13#10 +
                      'POTE: ' + #13#10 +
                      '  lw $t3, 0($t1)' + #13#10 +
                      '  lw $t4, 0($t2)' + #13#10 +
+                     '  addi $s6, $s6, 1' + #13#10 +
                      '  j FORP' + #13#10 +
                      #13#10 +
                      'FORP:' + #13#10 +
-                     '  mul $v0, $v0, $t3' + #13#10 +  // x * x
+                     '  mul $s6, $s6, $t3' + #13#10 +  // x * x  e  salvará no $s6
                      '  addi $t5, $t5, 1' + #13#10 + // i ++
                      '  bne  $t5, $t4, FORP' + #13#10 +
                      '  j RETORNAP';
@@ -633,8 +613,6 @@ end;
 
 procedure TForm1.FibonacciAssembly;
 begin
-  AlocaRegistradores(9);
-
   GCodigoAssembly := GCodigoAssembly + #13#10 + 'FIBO: ' + #13#10 +
                      '  lw $t3, 0($t1)' + #13#10 +
                      '  lw $t4, 0($t2)' + #13#10 +
@@ -649,12 +627,25 @@ begin
                      '  move $t4, $t5' + #13#10 +
                      '  move $t5, $t7' + #13#10 +
                      '  bne $t6, $t3, RETURN_A' + #13#10 +
-                     '  move $v0, $t5' + #13#10 +
+                     '  move $s7, $t5' + #13#10 +  // salvará no $s7
                      '  j FIM' + #13#10 +
                      #13#10 +
                      'RETURN_B:' + #13#10 +
-                     '  move $v0, $t4' + #13#10 +
+                     '  move $s7, $t4' + #13#10 +  // salvará no $s7
                      '  jr $ra';
+end;
+
+procedure TForm1.FormActivate(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to Form1.ComponentCount - 1 do
+  begin
+    if Form1.components[i] is TButton then
+    begin
+      TButton(Form1.components[i]).CanFocus := False;
+    end;
+  end;
 end;
 
 function TForm1.fibonacci(pElemento: Integer): Integer;
@@ -696,6 +687,101 @@ begin
                        '  ' + pNome + pPosicao.ToString + '_' + pElemento.LastValue.ToString +
                        ': .word 0x' + pElemento.LastValue.ToString + #13#10, []);
   end;
+end;
+
+procedure TForm1.btAdicaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '+';
+end;
+
+procedure TForm1.btCincoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '5';
+end;
+
+procedure TForm1.btDivisaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '/';
+end;
+
+procedure TForm1.btDoisClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '2';
+end;
+
+procedure TForm1.btMultiplicacaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '*';
+end;
+
+procedure TForm1.btNoveClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '9';
+end;
+
+procedure TForm1.btOitoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '8';
+end;
+
+procedure TForm1.btQuatroClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '4';
+end;
+
+procedure TForm1.btSeisClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '6';
+end;
+
+procedure TForm1.btSeteClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '7';
+end;
+
+procedure TForm1.btSubtracaoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '-';
+end;
+
+procedure TForm1.btTresClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '3';
+end;
+
+procedure TForm1.btUmClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '1';
+end;
+
+procedure TForm1.btZeroClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '0';
+end;
+
+procedure TForm1.btsqrtClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + 's';
+end;
+
+procedure TForm1.btpotenciaClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + '^';
+end;
+
+procedure TForm1.btfibonacciClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + 'f';
+end;
+
+procedure TForm1.btLimparClick(Sender: TObject);
+begin
+  edExpressao.Text := '';
+end;
+
+procedure TForm1.btEspacoClick(Sender: TObject);
+begin
+  edExpressao.Text := edExpressao.Text + ' ';
 end;
 
 end.

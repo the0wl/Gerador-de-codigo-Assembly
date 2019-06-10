@@ -1,33 +1,43 @@
 .data
-  var_soma0_4: .word 0x4
-  var_soma0_5: .word 0x5
-  var_subt1_9: .word 0x9
-  var_subt1_2: .word 0x2
-  var_soma2_9: .word 0x9
-  var_soma2_7: .word 0x7
+  var_soma0_1: .word 0x1
+  var_soma0_2: .word 0x2
+  var_mult1_3: .word 0x3
+  var_mult1_4: .word 0x4
+  var_soma2_3: .word 0x3
+  var_soma2_12: .word 0x12
+  var_subt3_15: .word 0x15
+  var_subt3_3: .word 0x3
 
 .text
 main:
-  la $t1, var_soma0_4
-  la $t2, var_soma0_5
+  la $t1, var_soma0_1
+  la $t2, var_soma0_2
   jal SOMA
-  la $t1, var_subt1_9
-  la $t2, var_subt1_2
+  la $t1, var_mult1_3
+  la $t2, var_mult1_4
+  jal MULT
+  la $t1, var_soma2_3
+  la $t2, var_soma2_12
+  jal SOMA
+  la $t1, var_subt3_15
+  la $t2, var_subt3_3
   jal SUBT
-  la $t1, var_soma2_9
-  la $t2, var_soma2_7
-  jal SOMA
   j FIM
 
 SOMA: 
   lw $t3, 0($t1)
   lw $t4, 0($t2)
-  add $4, $t3, $t4
+  add $s1, $t3, $t4
+  jr $ra
+MULT: 
+  lw $t3, 0($t1)
+  lw $t4, 0($t2)
+  mul $s3, $t3, $t4
   jr $ra
 SUBT: 
   lw $t3, 0($t1)
   lw $t4, 0($t2)
-  sub $5, $t3, $t4
+  sub $s2, $t3, $t4
   jr $ra
 
 FIM:
