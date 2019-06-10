@@ -35,14 +35,14 @@ Requisitos da calculadora:
 <h2>Tipos de dados</h2>
 
 <p>Abaixo os três registros criados para atender à necessidade da lógica elaborada:</p>
-<b>TInteiro</b>
+<b>TInteiro</b></br>
 <code>TInteiro = record</code></br>
 <code>Valor : Integer;</code></br>
 <code>Pos   : Integer;</code></br>
 <code>end;</code></br>
 
 <p>Tipo de dado do vetor que armazena os valores que serão parametros para os cálculos.</p>
-<b>TSinal</b>
+<b>TSinal</b></br>
 <code>TSinal = record</code></code></br>
 <code>Valor               : String;</code></br>
 <code>UtilizaVetorCalculo : Boolean;</code></br>
@@ -51,7 +51,7 @@ Requisitos da calculadora:
 <code>end;</code></br>
 
 <p>Tipo de dado do vetor que armazena as operações dos cálculos. Os valores <i>UtilizaVetorCalculo</i> e <i>PossuiParenteses</i> são usados para conseguir uma interpretação consisa da notação polonesa reversa.</p>
-<b>TCalculo</b>
+<b>TCalculo</b></br>
 <code>TCalculo = record</code></br>
 <code>PriValor : Integer;</code></br>
 <code>SegValor : Integer;</code></br>
