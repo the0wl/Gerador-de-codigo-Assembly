@@ -62,7 +62,7 @@ Requisitos da calculadora:
 
 <p>Tipo de dado do vetor que armazena os cálculos concluídos.</p>
 
-<p>Aparencia inicial do programa</p>
+<h2>Aparencia inicial do programa</h2>
 <p align="center">
   <img src="/images/raw-project.png?raw=true">
 </p>
