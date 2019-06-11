@@ -36,6 +36,7 @@ Calculadora desenvolvida na linguagem de programação Delphi na versão 10.2 (B
 <p>Abaixo os três registros criados para atender à necessidade da lógica elaborada:</p>
 
 <b>TInteiro</b></br>
+Tipo de dado do vetor que armazena os valores que serão parametros para os cálculos.
 ```
 TInteiro = record
 Valor : Integer;
@@ -44,9 +45,8 @@ end;
 ```
 </br>
 
-<p>Tipo de dado do vetor que armazena os valores que serão parametros para os cálculos.</p>
-
 <b>TSinal</b></br>
+Tipo de dado do vetor que armazena as operações dos cálculos. Os valores <i>UtilizaVetorCalculo</i> e <i>PossuiParenteses</i> são usados para conseguir uma interpretação consisa da notação polonesa reversa.
 ```
 TSinal = record
   Valor               : String;
@@ -57,9 +57,8 @@ end;</code>
 ```
 </br>
 
-<p>Tipo de dado do vetor que armazena as operações dos cálculos. Os valores <i>UtilizaVetorCalculo</i> e <i>PossuiParenteses</i> são usados para conseguir uma interpretação consisa da notação polonesa reversa.</p>
-
 <b>TCalculo</b></br>
+Tipo de dado do vetor que armazena os cálculos concluídos.
 ```
 TCalculo = record
   PriValor : Integer;
@@ -70,8 +69,6 @@ TCalculo = record
 end;
 ```
 </br>
-
-<p>Tipo de dado do vetor que armazena os cálculos concluídos.</p>
 
 <h2>Aparencia inicial do programa</h2>
 <p align="center">
