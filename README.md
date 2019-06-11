@@ -1,8 +1,7 @@
-<h1>Calculadora em Delphi 10.2 para a geração de código Assembly</h1>
-
-<p style="color: red">
+<p>
   Kelvin Isael Seibt
 </p>
+<h1>Calculadora em Delphi 10.2 para a geração de código Assembly</h1>
 
 <h2>Resumo</h2>
 Calculadora desenvolvida na linguagem de programação Delphi na versão 10.2 (Berlin) com o objetivo de conseguir extrair a lógica necessária para um cálculo a partir de uma fórmula em notação polonesa inversa. Com isso pretende-se gerar o código correspondente no formato MIPS assembly, que será rodado no software MARS para validação do código e dos resultados.
