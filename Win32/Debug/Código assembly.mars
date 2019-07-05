@@ -1,43 +1,35 @@
 .data
-  var_soma0_1: .word 0x1
-  var_soma0_2: .word 0x2
-  var_mult1_3: .word 0x3
-  var_mult1_4: .word 0x4
-  var_soma2_3: .word 0x3
-  var_soma2_12: .word 0x12
-  var_subt3_15: .word 0x15
-  var_subt3_3: .word 0x3
+  var_fibo0_4: .word 0x4
+  var_fibo0_0: .word 0x0
 
 .text
 main:
-  la $t1, var_soma0_1
-  la $t2, var_soma0_2
-  jal SOMA
-  la $t1, var_mult1_3
-  la $t2, var_mult1_4
-  jal MULT
-  la $t1, var_soma2_3
-  la $t2, var_soma2_12
-  jal SOMA
-  la $t1, var_subt3_15
-  la $t2, var_subt3_3
-  jal SUBT
+  la $t1, var_fibo0_4
+  la $t2, var_fibo0_0
+  jal FIBO
+
+CONTINUE:
   j FIM
 
-SOMA: 
+FIBO: 
   lw $t3, 0($t1)
   lw $t4, 0($t2)
-  add $s1, $t3, $t4
-  jr $ra
-MULT: 
-  lw $t3, 0($t1)
-  lw $t4, 0($t2)
-  mul $s3, $t3, $t4
-  jr $ra
-SUBT: 
-  lw $t3, 0($t1)
-  lw $t4, 0($t2)
-  sub $s2, $t3, $t4
+  beq $t3, $t4, RETURN_B
+  addi $t5, $t5, 1
+  addi $t6, $t6, 1
+  j RETURN_A
+
+RETURN_A:
+  addi $t6, $t6, 1
+  add $t7, $t4, $t5
+  move $t4, $t5
+  move $t5, $t7
+  bne $t6, $t3, RETURN_A
+  move $s7, $t5
+  j FIM
+
+RETURN_B:
+  move $s7, $t4
   jr $ra
 
 FIM:

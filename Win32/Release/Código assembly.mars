@@ -1,0 +1,38 @@
+.data
+  var_soma0_5: .word 0x5
+  var_soma0_6: .word 0x6
+  var_subt1_8: .word 0x8
+  var_subt1_4: .word 0x4
+  var_mult2_11: .word 0x11
+  var_mult2_4: .word 0x4
+
+.text
+main:
+  la $t1, var_soma0_5
+  la $t2, var_soma0_6
+  jal SOMA
+  la $t1, var_subt1_8
+  la $t2, var_subt1_4
+  jal SUBT
+  la $t1, var_mult2_11
+  la $t2, var_mult2_4
+  jal MULT
+  j FIM
+
+SOMA: 
+  lw $t3, 0($t1)
+  lw $t4, 0($t2)
+  add $s1, $t3, $t4
+  jr $ra
+SUBT: 
+  lw $t3, 0($t1)
+  lw $t4, 0($t2)
+  sub $s2, $t3, $t4
+  jr $ra
+MULT: 
+  lw $t3, 0($t1)
+  lw $t4, 0($t2)
+  mul $s3, $t3, $t4
+  jr $ra
+
+FIM:
